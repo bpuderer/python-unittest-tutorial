@@ -288,7 +288,7 @@ class BaseTestCase(unittest.TestCase):
 
 class ExampleTestCase(BaseTestCase):
     def test_str_ends_in_r(self):
-        self.assertEndsInR('Doctors')
+        self.assertEndsInR('Doctor')
 ```
 
 ## Best Practices
