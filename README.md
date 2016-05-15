@@ -276,11 +276,34 @@ OK (expected failures=1, unexpected successes=1)
 
 ## Base Test Class
 
-Coming soon
+A base test case can be added to make custom assertions and helpers available to a number of tests.
 
-## Custom Assertions
+```python
+import unittest
 
-Coming soon
+class BaseTestCase(unittest.TestCase):
+    def assertEndsInR(self, seq):
+        if seq[-1].lower() != 'r':
+            raise AssertionError("{} does not end in 'r'".format(seq))
+
+class ExampleTestCase(BaseTestCase):
+    def test_str_ends_in_r(self):
+        self.assertEndsInR('Doctors')
+```
+
+## Best Practices
+
+* Test cases should be small and test only one thing.
+* Tests should run fast.  This is essential for inclusion in a CI environment.
+* Test cases should be fully independent.  Tests should not depend on each other and can run in any order any number of times.
+* Tests should be fully automated and not require manual interaction or checks to determine if they pass or fail.
+* Tests should not include unnecessary assertions such as "checkpoints" in the test. Assert *only* what the test case is testing.  See first item in list.
+* Tests should be portable and easily run in different environments.
+* Tests should setup what they require to run.  Tests should not make assumptions about particular resources existing.
+* Tests should cleanup afterwards.
+* Test names should clearly describe what they are testing.  See first item in list.
+* Tests should produce meaningful messages when they fail.  Try causing the test to fail and see if the reason for the failure can be determined by reading the output of the test case alone.  See example in Assertions section above - assertTrue vs assertEqual
+* Tests should use the strongest assertions possible.  e.g. checking the contents of a list.  Does order matter? Are duplicates allowed? Are additional items allowed?  The answers determine the assertion that should be used, assertEqual, assertItemsEqual, assertEqual with set operations, etc.
 
 ## Links
 
