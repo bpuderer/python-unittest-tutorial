@@ -293,11 +293,11 @@ class ExampleTestCase(BaseTestCase):
 
 ## Best Practices
 
-* Test cases should be small and test only one thing.
+* Tests should be small and test only one thing.
 * Tests should run fast.  This is essential for inclusion in a CI environment.
-* Test cases should be fully independent.  Tests should not depend on each other and can run in any order any number of times.
+* Tests should be fully independent.  Tests should not depend on each other and can run in any order any number of times.
 * Tests should be fully automated and not require manual interaction or checks to determine if they pass or fail.
-* Tests should not include unnecessary assertions such as "checkpoints" in the test. Assert *only* what the test case is testing.  See first item in list.
+* Tests should not include unnecessary assertions such as "checkpoints" in the test. Assert *only* what the test is testing.  See first item in list.
 * Tests should be portable and easily run in different environments.
 * Tests should setup what they require to run.  Tests should not make assumptions about particular resources existing.
 * Tests should cleanup afterwards.
