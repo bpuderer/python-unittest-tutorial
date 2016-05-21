@@ -279,7 +279,7 @@ Tests (and TestCases) can be tagged several different ways enabling dynamic sele
 
 The examples below do not use the attr decorator as is available in nose.plugins.attrib.
 
-A Boolean attribute can be used to tag a test so it can be chosen for execution as well as being excluded with a logical NOT.  In the example below, setting the nose/nose2 attribute argument (-a,--attr for nose, -A,--attribute for nose2) to "slow" selects this test and "\!slow" (escape the !) selects everything but this test assuming they don't have the slow attribute at all or it is set to False.  Truthiness is used so it doesn't have to be a Boolean.
+A Boolean attribute can be used to tag a test so it can be chosen for execution as well as being excluded with a logical NOT.  In the example below, setting the nose/nose2 attribute argument (-a,--attr for nose, -A,--attribute for nose2) to "slow" selects this test and "\\!slow" (escape the !) selects everything but this test assuming they don't have the slow attribute at all or it is set to False.  Truthiness is used so it doesn't have to be a Boolean.
 
 ```python
     def test_timeouts(self):
