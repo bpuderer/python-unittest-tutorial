@@ -273,6 +273,49 @@ Ran 2 tests in 0.000s
 OK (expected failures=1, unexpected successes=1)
 ```
 
+## Tagging Tests
+
+Tests (and TestCases) can be tagged several different ways enabling dynamic selection with nose and nose2.
+
+The examples below do not use the attr decorator as is available in nose.plugins.attrib.
+
+A Boolean attribute can be used to tag a test so it can be chosen for execution as well as being excluded with a logical NOT.  In the example below, setting the nose/nose2 attribute argument (-a,--attr for nose, -A,--attribute for nose2) to "slow" selects this test and "\!slow" (escape the !) selects everything but this test assuming they don't have the slow attribute at all or it is set to False.  Truthiness is used so it doesn't have to be a Boolean.
+
+```python
+    def test_timeouts(self):
+        self.assertTrue(1)
+    test_timeouts.slow = True
+```
+
+Specific values can also be used.  Setting the attribute arg to life=42 selects the following test.  The example uses an int but the match is *case insensitive*.
+
+```python
+    def test_something(self):
+        self.assertTrue(1)
+    test_something.life = 42
+```
+
+List attributes can also be used to tag tests for execution.  Setting the attribute arg to "tags=tag1" selects this test.  The match is *case insensitive* and there's nothing special about the name "tags".  NOTE: nose2 as tested with version 0.6.4 supports a logical NOT with lists but nose as of version 1.3.7 does not.  In the example, "\!tags=tag1" with nose2 selects tests *with* the "tags" list attribute which do not contain the "tag1" element.
+
+```python
+    def test_something_else(self):
+        self.assertTrue(1)
+    test_something_else.tags = ['tag1', 'tag2']
+```
+
+To run tests where the attribute args are logically ANDed, separate them with commas.  With nose, "-a tags=tag1,tags=tag2" only selects the second test.  To logically OR, pass multiple attribute args  With nose, "-a tags=tag1 -a tags=tag2" selects both.
+
+```python
+    def test_feature_scenario1(self):
+        self.assertTrue(1)
+    test_feature_scenario1.tags = ['tag1']
+
+    def test_feature_scenario2(self):
+        self.assertTrue(1)
+    test_feature_scenario2.tags = ['tag1', 'tag2']
+```
+
+Nose and nose2 also support python expressions with attributes with the -A,--eval-attr and -E,--eval-attribute arguments respectively.  Example with nose: "-A 'slow or life==42'".  Example with nose2: "-E 'slow or life==42'".
 
 ## Base Test Class
 
@@ -310,5 +353,7 @@ class ExampleTestCase(BaseTestCase):
 [PSF unittest documentation](https://docs.python.org/2.7/library/unittest.html)
 
 [Ned Batchelder: Getting Started Testing](http://nedbatchelder.com/text/test0.html)
+
+[C. Titus Brown's An Extended Introduction to the nose Unit Testing Framework](http://ivory.idyll.org/articles/nose-intro.html)
 
 [Doug Hellmann's PyMOTW unittest](https://pymotw.com/2/unittest/index.html)
