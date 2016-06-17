@@ -193,7 +193,7 @@ OK
 
 ## Test Skipping
 
-Tests can marked for unconditional skipping by including the skip() decorator and display "s" or "S" when run.
+Tests and test cases can marked for unconditional skipping by including the skip() decorator and display "s" or "S" when run.
 
 ```python
     @unittest.skip("good reason for skipping")
@@ -201,7 +201,7 @@ Tests can marked for unconditional skipping by including the skip() decorator an
         self.assertTrue(True)
 ```
 
-Tests can also be conditionally skipped using skipIf() and skipUnless()
+Tests and test cases can also be *conditionally* skipped using skipIf() and skipUnless()
 
 ```python
     @unittest.skipIf(platform.system() == 'Windows', 'does not run on windows')
@@ -277,7 +277,7 @@ OK (expected failures=1, unexpected successes=1)
 
 Tests (and TestCases) can be tagged several different ways enabling dynamic selection with nose and nose2.
 
-The examples below do not use the attr decorator as is available in nose.plugins.attrib.
+The examples below do not use the attr decorator available in nose.plugins.attrib.
 
 A Boolean attribute can be used to tag a test so it can be chosen for execution as well as being excluded with a logical NOT.  In the example below, setting the nose/nose2 attribute argument (-a,--attr for nose, -A,--attribute for nose2) to "slow" selects this test and "\\!slow" (escape the !) selects everything but this test assuming they don't have the slow attribute at all or it is set to False.  Truthiness is used so it doesn't have to be a Boolean.
 
