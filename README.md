@@ -87,6 +87,13 @@ To assert that an exception is raised, a context manager with the assertRaises m
             raise TypeError
 ```
 
+To unconditionally fail a test, use the fail method
+
+```python
+    def test_failure(self):
+        self.fail('optional message')
+```
+
 ## Running Tests
 
 The most basic way of running tests is to include unittest.main() then execute the script.
