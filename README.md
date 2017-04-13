@@ -1,6 +1,6 @@
 # Python unittest Tutorial
 
-Python unittest aka "PyUnit" is the python version of JUnit by Beck and Gamma and supports test fixtures, test cases, test suites, and test runners.
+Python unittest aka "PyUnit" is the python version of Beck and Gamma's JUnit and supports test fixtures, test cases, test suites, and test runners.
 
 ## Simple Test Structure
 
@@ -87,7 +87,7 @@ To assert that an exception is raised, a context manager with the assertRaises m
             raise TypeError
 ```
 
-To unconditionally fail a test, use the fail method
+To unconditionally fail a test, use the fail method.
 
 ```python
     def test_failure(self):
@@ -123,7 +123,7 @@ $ nose2 --plugin nose2.plugins.junitxml --junit-xml
 
 ## Test Outcomes
 
-There are three outcomes for a test: pass, fail, and error.  Tests which do not raise errors pass and display a ".".  Tests which raise AssertionError fail and display "F".  Tests which raise an error other than AssertionError report error display an "E".  Tests can also be skipped and denoted as expected failures.  More on these later.
+The three test outcomes are pass, fail, and error.  Tests which do not raise an error pass and display a ".".  Tests which raise AssertionError fail and display an "F".  Tests which raise an error other than AssertionError report error and display an "E".  Tests can also be skipped or denoted as expected failures.  More on these later.
 
 First line of output where five tests pass, one fails, and one reports an error.
 
@@ -350,9 +350,9 @@ class ExampleTestCase(BaseTestCase):
 * Tests should not include unnecessary assertions such as "checkpoints" in the test. Assert *only* what the test is testing.  See first item in list.
 * Tests should be portable and easily run in different environments.
 * Tests should setup what they require to run.  Tests should not make assumptions about particular resources existing.
-* Tests should cleanup afterwards.
-* Test names should clearly describe what they are testing.  See first item in list.
-* Tests should produce meaningful messages when they fail.  Try causing the test to fail and see if the reason for the failure can be determined by reading the output of the test case alone.  See example in Assertions section above - assertTrue vs assertEqual
+* Tests should cleanup created resources afterwards.
+* Test names should clearly describe what they are testing.
+* Tests should produce meaningful messages when they fail.  Try causing the test to fail and see if the failure reason can be determined by reading the test case output.  See example in Assertions section above - assertTrue vs assertEqual
 * Tests should use the strongest assertions possible.  e.g. checking the contents of a list.  Does order matter? Are duplicates allowed? Are additional items allowed?  The answers determine the assertion that should be used, assertEqual, assertItemsEqual, assertEqual with set operations, etc.
 
 ## Links
