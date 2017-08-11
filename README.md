@@ -18,7 +18,7 @@ class BasicTestCase(unittest.TestCase):
 
 ## Assertions
 
-The TestCase class provides a number of assert methods including the common assertEqual(), assertNotEqual(), assertTrue(), and assertFalse().  See the [official documentation] (https://docs.python.org/2.7/library/unittest.html#assert-methods).
+The TestCase class provides a number of assert methods including the common assertEqual(), assertNotEqual(), assertTrue(), and assertFalse().  See the [official documentation](https://docs.python.org/2.7/library/unittest.html#assert-methods).
 
 As of python 2.7, assertEqual() automatically selects type-specific methods if the two args are the same type including strings, sequences, lists, tuples, sets or frozensets, dicts.  See [docs](https://docs.python.org/2.7/library/unittest.html#type-specific-methods) for details.  These methods construct error messages detailing the differences between the two arguments.
 
