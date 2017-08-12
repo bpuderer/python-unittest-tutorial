@@ -83,8 +83,7 @@ To assert that an exception is raised, a context manager with the assertRaises m
 ```python
     def test_exception(self):
         with self.assertRaises(TypeError):
-            # statements that raise exception
-            raise TypeError
+            any(42)
 ```
 
 To unconditionally fail a test, use the fail method.
@@ -103,7 +102,13 @@ if __name__ == '__main__':
     unittest.main()
 ```
 
-Another way is to utilize [unittest discovery](https://docs.python.org/2.7/library/unittest.html#test-discovery):
+Another way is to run unittest as a script and specify a module, class, or test to execute.
+
+```
+$ python -m unittest -v tests.test_module1 tests.test_module2.ExampleTestCase tests.test_module3.ExampleTestCase.test_method
+```
+
+Another way is to utilize [unittest discovery](https://docs.python.org/2.7/library/unittest.html#test-discovery).
 
 ```
 $ python -m unittest discover -v
@@ -123,7 +128,7 @@ $ nose2 --plugin nose2.plugins.junitxml --junit-xml
 
 ## Test Outcomes
 
-The three test outcomes are pass, fail, and error.  Tests which do not raise an error pass and display a ".".  Tests which raise AssertionError fail and display an "F".  Tests which raise an error other than AssertionError report error and display an "E".  Tests can also be skipped or denoted as expected failures.  More on these later.
+The three test outcomes are pass, fail, and error.  Tests which do not raise an error, pass and display a ".".  Tests which raise AssertionError, fail and display an "F".  Tests which raise an error other than AssertionError, report error and display an "E".  Tests can also be skipped or denoted as expected failures.  More on these later.
 
 First line of output where five tests pass, one fails, and one reports an error.
 
@@ -138,58 +143,71 @@ setUp(), tearDown(), setUpClass(), tearDownClass(), setUpModule(), tearDownModul
 
 setUp() and tearDown() run before and after ever test.  tearDown() only runs if setUp() was successful and runs regardless of the test result.
 
-setUpClass() and tearDownClass() are run before/after an individual test class and must be decorated as a classmethod().  If an error occurs in setUpClass(), the tests and tearDownClass() are not run.  Also, neither are run if the class is marked skip.
+setUpClass() and tearDownClass() are run before/after an individual test class and must be decorated as a class method.  If an error occurs in setUpClass(), the tests and tearDownClass() are not run.  Also, neither are run if the class is marked skip.
 
 setUpModule() and tearDownModule() are run before/after the test classes and are implemented as functions.  If an error occurs in setUpModule(), the tests and tearDownModule() are not run.  
 
+addCleanup() adds functions to be called after tearDown() and run even if tearDown() does not.  Functions are called in LIFO order.  Ned Batchelder recommends addCleanup over tearDown: [Machete-mode Debugging](https://nedbatchelder.com/text/machete.html)
+
 ```python
 import unittest
+
+
+def cleanup_method(msg):
+    print "cleanup_method: " + msg
+
 
 def setUpModule():
     print "in setUpModule"
 
 def tearDownModule():
-    print "\nin tearDownModule"
+    print "in tearDownModule"
 
 class BasicTestCase1(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
         print "in setUpClass"
- 
+
     @classmethod
     def tearDownClass(cls):
-        print "\nin tearDownClass"
+        print "in tearDownClass"
 
     def setUp(self):
-        print "in setUp"
+        print "\nin setUp"
 
     def tearDown(self):
         print "in tearDown"
 
     def test_something(self):
         print "in BasicTestCase1.test_something"
+        self.addCleanup(cleanup_method, "first addCleanup in test_something")
+        self.addCleanup(cleanup_method, "second addCleanup in test_something")
         self.assertTrue(True)
 
 class BasicTestCase2(unittest.TestCase):
 
-    def test_something(self):
-        print "in BasicTestCase2.test_something"
+    def test_something_else(self):
+        print "\nin BasicTestCase2.test_something_else"
         self.assertTrue(True)
 ```
 
-When run:
+When run with verbose option:
 
 ```
 in setUpModule
 in setUpClass
+test_something (tests.test_fixtures.BasicTestCase1) ... 
 in setUp
 in BasicTestCase1.test_something
 in tearDown
-.
+cleanup_method: second addCleanup in test_something
+cleanup_method: first addCleanup in test_something
+ok
 in tearDownClass
-in BasicTestCase2.test_something
-.
+test_something_else (tests.test_fixtures.BasicTestCase2) ... 
+in BasicTestCase2.test_something_else
+ok
 in tearDownModule
 
 ----------------------------------------------------------------------
@@ -208,7 +226,7 @@ Tests and test cases can marked for unconditional skipping by including the skip
         self.assertTrue(True)
 ```
 
-Tests and test cases can also be *conditionally* skipped using skipIf() and skipUnless()
+Tests and test cases can be *conditionally* skipped using skipIf() and skipUnless()
 
 ```python
     @unittest.skipIf(platform.system() == 'Windows', 'does not run on windows')
